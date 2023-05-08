@@ -80,6 +80,7 @@ def upload_model():
             if file.filename == "":
                 return redirect(request.url)
             if file and file.filename.endswith('.h5'):
+                logging.debug("Fichier de modèle reçu : {}".format(file.filename))
                 # if folder not exist, create it
                 if not os.path.exists(app.config["MODELS_FOLDER"]):
                     os.mkdir(app.config["MODELS_FOLDER"])
