@@ -16,6 +16,7 @@ MODELS_FOLDER = "models"
 app.config["UPLOAD_FOLDER"] = UPLOAD_FOLDER
 app.config["IMAGE_DISPLAY_FOLDER"] = IMAGE_DISPLAY_FOLDER
 app.config["MODELS_FOLDER"] = MODELS_FOLDER
+app.config["DEBUG"] = True
 
 
 @app.route("/", methods=["GET", "POST"])
