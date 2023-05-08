@@ -8,6 +8,9 @@ import shutil
 import glob
 from werkzeug.utils import secure_filename
 import traceback
+import logging
+
+logging.basicConfig(level=logging.DEBUG)
 
 app = Flask(__name__)
 
