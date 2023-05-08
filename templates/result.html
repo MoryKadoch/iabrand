@@ -15,8 +15,9 @@
       <img src="{{ url_for('static', filename='images/' + image_file) }}" alt="Uploaded image" class="img-fluid"
         style="width: 500px; height: 500px; object-fit: cover;">
     </div>
-    <p>La marque prédite est: <strong>{{ predicted_class }}</strong> avec une probabilité de {{ predicted_probability *
-      100 | round(2) }}%</p>
+    {% from "math" import ceil %}
+    <p>La marque prédite est : <strong>{{ predicted_class }}</strong> avec une probabilité de {{ predicted_probability *
+      100 | ceil }}%</p>
     <a class="btn btn-primary" href="/">Uploader une autre image</a>
   </div>
 </body>
