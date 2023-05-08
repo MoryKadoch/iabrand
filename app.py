@@ -1,11 +1,12 @@
 import os
-from flask import Flask, render_template, request, redirect, url_for
+from flask import Flask, render_template, request, redirect, url_for, jsonify
 from tensorflow.keras.models import load_model
 from tensorflow.keras.preprocessing import image
 import numpy as np
 import shutil
 import glob
 from werkzeug.utils import secure_filename
+import traceback
 
 app = Flask(__name__)
 
@@ -66,21 +67,27 @@ def predict(file_path, model_path):
 
 @app.route("/upload_model", methods=["GET", "POST"])
 def upload_model():
-    if request.method == "POST":
-        if "file" not in request.files:
-            return redirect(request.url)
-        file = request.files["file"]
-        if file.filename == "":
-            return redirect(request.url)
-        if file and file.filename.endswith('.h5'):
-            # if folder not exist, create it
-            if not os.path.exists(app.config["MODELS_FOLDER"]):
-                os.mkdir(app.config["MODELS_FOLDER"])
-            filename = secure_filename(file.filename)
-            file_path = os.path.join(app.config["MODELS_FOLDER"], filename)
-            file.save(file_path)
-            return redirect(url_for('index'))
-    return render_template("upload.html")
+    try:
+        if request.method == "POST":
+            if "file" not in request.files:
+                return redirect(request.url)
+            file = request.files["file"]
+            if file.filename == "":
+                return redirect(request.url)
+            if file and file.filename.endswith('.h5'):
+                # if folder not exist, create it
+                if not os.path.exists(app.config["MODELS_FOLDER"]):
+                    os.mkdir(app.config["MODELS_FOLDER"])
+                filename = secure_filename(file.filename)
+                file_path = os.path.join(app.config["MODELS_FOLDER"], filename)
+                file.save(file_path)
+                return redirect(url_for('index'))
+        return render_template("upload.html")
+
+    except Exception as e:
+        app.logger.error("Erreur lors de l'upload du modèle : {}".format(e))
+        app.logger.error(traceback.format_exc())
+        return jsonify({"error": "Une erreur est survenue lors de l'upload du modèle"}), 500
 
 
 if __name__ == "__main__":
