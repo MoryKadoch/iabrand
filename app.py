@@ -1,5 +1,6 @@
 import os
-from flask import Flask, render_template, request, redirect, url_for, jsonify
+from flask import Flask, render_template, request, redirect, url_for
+from flask import jsonify
 from tensorflow.keras.models import load_model
 from tensorflow.keras.preprocessing import image
 import numpy as np
@@ -88,7 +89,7 @@ def upload_model():
     except Exception as e:
         app.logger.error("Erreur lors de l'upload du modèle : {}".format(e))
         app.logger.error(traceback.format_exc())
-        #return jsonify({"error": "Une erreur est survenue lors de l'upload du modèle"}), 500
+        return jsonify({"error": "Une erreur est survenue lors de l'upload du modèle"}), 500
 
 
 if __name__ == "__main__":
